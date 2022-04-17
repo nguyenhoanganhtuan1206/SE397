@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <head>
+        <meta charset="UTF-8">
+        <title>Header</title>
+    </head>
+    <body>
+        <header th:fragment="header">
+            <div class="header-wrapper">
+                <div class="header__common">
+                    <div class="container">
+                        <div class="header__container-top">
+                            <ul class="header__top-list">
+                                <li>
+                                    <a href="/" class="header__top-list-link">Home</a>
+                                </li>
+
+                                <li>
+                                    <a href="" class="header__top-list-link">About Us</a>
+                                </li>
+
+                                <li>
+                                    <a href="" class="header__top-list-link">Pages</a>
+                                </li>
+
+                                <li>
+                                    <a href="" class="header__top-list-link">Contact Us</a>
+                                </li>
+                            </ul>
+
+                            <ul sec:authorize="isAuthenticated()" class="header__top-list">
+                                <li class="header__top-list-right-area has-user">
+                                    <i class="user fa-solid fa-user"></i>
+                                    <span th:text="${session.user.name}"></span>
+
+                                    <ul class="info-user-list">
+                                        <li>
+                                            <a th:href="@{/{id}/personal-info(id=${session.user.id})}"
+                                               class="info-user-item">Information Personal
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a th:href="@{/{id}/history(id=${session.user.id})}" class="info-user-item">
+                                                Purchase History
+                                            </a>
+                                        </li>
+
+                                        <li sec:authorize="hasRole('ADMIN')">
+                                            <a href="/admin">Admin Page</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="header__top-list-right-area">
+                                    <a class="logOut" href="/log-out">Logout</a>
+                                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                                </li>
+                            </ul>
+
+                            <ul sec:authorize="!isAuthenticated()" class="header__top-list">
+                                <li class="header__top-list-right-area">
+                                    <a href="/login">
+                                        Sign in
+                                        <i class="fas fa-sign-in"></i>
+                                    </a>
+                                </li>
+
+                                <li class="header__top-list-right-area">
+                                    <a href="/user-register" class="left">
+                                        Register
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="header__body">
+                    <div class="container">
+                        <div class="row-grid header__body-container">
+                            <div class="col-grid l-grid-8">
+                                <form class="header__search-form" th:action="@{/search-product}" method="post">
+                                    <select class="header__search-select">
+                                        <option value="" selected>Category</option>
+                                        <option th:each="category : ${categories}">
+                                            <a th:href="@{/category.name}" th:text="${category.name}"></a>
+                                        </option>
+                                    </select>
+
+                                    <input autocomplete="OFF" type="text" class="input" name="keyword"
+                                           placeholder="Search Products Here...">
+                                    <button type="submit" class="button">
+                                        <i class="ti-search"></i>
+                                    </button>
+                                </form>
+                            </div>
+
+                            <div class="col-grid l-grid-4">
+                                <div class="header__action">
+                                    <i class="fas fa-phone-alt"></i>
+
+                                    <i class="ti-heart"></i>
+
+                                    <div class="header__action-group">
+                                        <span th:if="${addToCart.size() > 0}" th:text="${addToCart.size()}"
+                                              class="quantity-cart">3
+                                        </span>
+                                        <i class="fas fa-shopping-cart"></i>
+
+                                        <div class="cart-container">
+                                            <div class="no-cart" th:if="${addToCart.size() == 0}">
+                                                <img src="/assets/img/product/no_cart.png">
+                                                <p>No Products Available</p>
+                                            </div>
+
+                                            <div th:if="${addToCart.size() > 0}">
+                                                <div class="header">
+                                                    <div class="quantity">
+                                                        <span th:text="${addToCart.size()}"></span>
+                                                        <span>Items</span>
+                                                    </div>
+
+                                                    <div class="view-cart">
+                                                        <a href="">View Cart</a>
+                                                    </div>
+                                                </div>
+
+
+                                                <ul class="body">
+                                                    <li th:each="productCart : ${addToCart}" class="cart-item">
+                                                        <img th:src="${productCart.getValue().image}">
+
+                                                        <div class="content">
+                                                            <div class="info">
+                                                                <h2 class="name">
+                                                                    <a href=""
+                                                                       th:text="${productCart.getValue().name}"></a>
+                                                                </h2>
+
+                                                                <div class="info-group">
+                                                                    <div class="quantity">
+                                                                        <span th:text="${productCart.getValue().getQuantity()}"></span>
+                                                                        <span>x</span>
+                                                                    </div>
+
+                                                                    <div class="price">
+                                                                        <span>$</span>
+                                                                        <span th:text="${cart.totalPriceEachProduct(productCart.getValue().getId() , carts)}"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <a style="color: #000"
+                                                               th:href="@{/{id}/remove-product(id=${productCart.getValue().getId()})}">
+                                                                <i class="ti-close"></i>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+
+                                                    <li class="footer-total">
+                                                        <div class="total">
+                                                            <span>Total</span>
+
+                                                            <div class="price">
+                                                                <span>$</span>
+                                                                <span th:text="${cart.totalPriceProduct(carts)}"></span>
+                                                            </div>
+                                                        </div>
+
+                                                        <a class="button btn-checkout" href="/payment">Checkout</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="h-100" th:fragment="header__admin">
+            <div class="nav-left__admin">
+                <div class="img-logo__wrapper">
+                    <img src="/assets/img/admin/logo-light.png" class="logo__admin" alt="">
+                </div>
+
+                <ul class="function__admin-list mb-0" style="padding: 0px 0px 0px 15px;">
+                    <li>
+                        <a href="/admin/" class="active__admin-page">
+                            <i class="fas fa-home"></i>
+                            Trang chủ
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/admin/management-account" class="active__admin-page">
+                            <i class="fas fa-user"></i>
+                            Quản lý tài khoản
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/admin/management-products" class="active__admin-page">
+                            <i class="fas fa-calendar-alt"></i>
+                            Quản lý sản phẩm
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/admin/approval-order" class="active__admin-page">
+                            <i class="fas fa-tasks"></i>
+                            Quản lý đơn hàng
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/admin/" class="active__admin-page">
+                            <i class="ti-list"></i>
+                            Quản lý danh mục sản phẩm
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/admin/" class="active__admin-page">
+                            <i class="fas fa-print"></i>
+                            Quản lý khuyến mãi
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div th:fragment="header__admin-right">
+            <ul class="header__admin-right-list d-flex align-items-center justify-content-end">
+                <li class="has-notify">
+                    <i class="icon-bell fas fa-bell"></i>
+
+                    <span class="notification__admin" th:text="${orderFalse.size()}"></span>
+                </li>
+
+                <li>
+                    <i class="icon-email fas fa-envelope"></i>
+                </li>
+
+                <li class="has-admin" style="position: relative">
+                    <span class="name mr-3" sec:authentication="principal.username"></span>
+                    <i class="fas fa-angle-down"></i>
+
+                    <ul class="function__admin">
+                        <li>
+                            <a href="/user">Trang chủ mua hàng</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <script>
+            var activeAdminPage =  document.querySelectorAll('.active__admin-page');
+            for(const active of activeAdminPage) {
+                active.addEventListener('click' , function (e) {
+                    e.preventDefault();
+                    active.classList.toggle('active__admin');
+                })
+            }
+         </script>
+    </body>
+</html>

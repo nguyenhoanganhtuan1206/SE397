@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+
+    <!-- CSS-->
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/grid.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/base.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/adminStyle.css}">
+
+    <!-- Framework-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" th:href="@{/assets/icon/themify-icons/themify-icons.css}">
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="main">
+    <div class="admin__container">
+        <div class="row-grid" style="overflow: hidden">
+            <div class="col-grid l-grid-2 pl-0 pr-0 overflow-hidden">
+                <div th:replace="~{layout/header::header__admin}">
+                </div>
+            </div>
+
+            <div class="col-grid l-grid-10 pl-0 pr-0">
+                <div th:replace="~{layout/header::header__admin-right}"></div>
+
+                <div class="section content-admin">
+                    <div class="container-admin-fluid">
+                        <h1 class="title">Dashboard</h1>
+                        <div class="row-grid">
+                            <div class="col-grid l-grid-3">
+                                <div class="statistical-card green">
+                                    <div class="statistical-card__info mt-3 d-flex justify-content-between">
+                                        <h3 class="title">Total Orders</h3>
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </div>
+                                    <span class="price">
+                                           <span th:text="${totalOrders.size()}"></span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-grid l-grid-3">
+                                <div class="statistical-card green">
+                                    <div class="statistical-card__info mt-3 d-flex justify-content-between">
+                                        <h3 class="title">This Month's Revenue</h3>
+                                        <i class="fas fa-dollar-sign"></i>
+                                    </div>
+                                    <span class="price">
+                                        <span>$</span>
+                                        <span class="ml-2" th:text="${totalPriceMonth}"></span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-grid l-grid-3">
+                                <div class="statistical-card green">
+                                    <div class="statistical-card__info mt-3 d-flex justify-content-between">
+                                        <h3 class="title">Revenue Of The Year</h3>
+                                        <i class="fas fa-dollar-sign"></i>
+                                    </div>
+                                    <span class="price">
+                                           <span>$</span>
+                                           <span th:text="${totalPriceCurYear}"></span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-grid l-grid-3 blue">
+                                <div class="statistical-card blue">
+                                    <div class="statistical-card__info mt-3 d-flex justify-content-between">
+                                        <h3 class="title">Customers</h3>
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <span class="price">
+                                           <span th:text="${userQuantity.size()}"></span>
+                                           <span class="ml-2">customers</span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-grid l-grid-3">
+                                <div class="statistical-card blue">
+                                    <div class="statistical-card__info mt-3 d-flex justify-content-between">
+                                        <h3 class="title">Employees</h3>
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <span class="price">
+                                           <span th:text="${adminQuantity.size()}"></span>
+                                        <span class="ml-2">employees</span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-grid l-grid-3">
+                                <div class="statistical-card green-second">
+                                    <div class="statistical-card__info mt-3 d-flex justify-content-between">
+                                        <h3 class="title">Products</h3>
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </div>
+                                    <span class="price">
+                                           <span th:text="${products.size()}"></span>
+                                                       <span class="ml-2">products</span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-grid l-grid-3">
+                                <div class="statistical-card green-second">
+                                    <div class="statistical-card__info mt-3 d-flex justify-content-between">
+                                        <h3 class="title">Categories</h3>
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </div>
+                                    <span class="price">
+                                           <span>3430</span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-grid l-grid-3">
+                                <div class="statistical-card yellow">
+                                    <div class="statistical-card__info mt-3 d-flex justify-content-between">
+                                        <h3 class="title">Unapproved Invoice</h3>
+                                        <i class="fas fa-calendar-check"></i>
+                                    </div>
+                                    <span class="price">
+                                        <span th:text="${ordersStatus.size()}"></span>
+                                        <span class="ml-2">invoices</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row-grid container-admin-fluid">
+                        <div class="col-grid l-grid-7 product__detail-admin">
+                            <table class="product__detail-table">
+                                <tr>
+                                    <th>No</th>
+                                    <th></th>
+                                    <th>Product Name</th>
+                                    <th>Status</th>
+                                    <th>Sold</th>
+                                    <th>Review</th>
+                                </tr>
+
+                                <tr class="product__detail-item" th:each="product , inner : ${products}">
+                                    <td th:text="${inner.count}"></td>
+                                    <td>
+                                        <img th:src="${product.image}">
+                                    </td>
+                                    <td th:text="${product.name}"></td>
+                                    <td style="color: var(--primary-color-blue);" th:if="${!product.status}">Non-active</td>
+                                    <td style="color: var(--primary-color-blue);" th:if="${product.status}">Active</td>
+                                    <td th:text="${orderDetailRepo.getQuantitySold(product.id)}"></td>
+                                    <td th:text="${evaluationRepo.getRateReviewByProductId(product.id)}"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div th:replace="~{layout/footer::footer__admin}"></div>
+            </div>
+
+            <div class="product__features">
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

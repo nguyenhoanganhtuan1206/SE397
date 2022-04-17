@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Confirm</title>
+    <!-- CSS-->
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/grid.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/base.css}">
+
+    <!-- Framework-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" th:href="@{/assets/icon/themify-icons/themify-icons.css}">
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="main">
+        <header th:replace="~{layout/header::header}"></header>
+
+        <div class="user__order-confirm-container">
+            <div class="container">
+                <div class="user__order-confirm-top flex-column text-center d-flex align-items-center justify-content-center">
+                    <i class="fa-solid fa-check text-success"></i>
+
+                    <div class="content">
+                        <h3 class="text-success">Order Successfully</h3>
+                        <p>Thank you so much for order . Please waiting for order approval.</p>
+
+                        <a class="button btn-confirm__order" th:href="@{/{id}/history(id=${customer.id})}">Check your order</a>
+                    </div>
+                </div>
+
+                <div class="user__order-confirm-body">
+                    <h3 class="title">
+                        <span>Your Order Id: #</span>
+                        <span th:text="${session.orderId}"></span>
+                    </h3>
+
+                    <table class="info__user-order--table">
+                        <tr>
+                            <th>ITEM</th>
+                            <th>QUANTITY</th>
+                            <th>SUBTOTAL</th>
+                        </tr>
+
+                        <tr th:each="orderDetail : ${orderDetails.getOrderDetailByOrderId(session.orderId)}">
+                            <td>
+                                <img th:src="${orderDetail.product.image}">
+
+                                <div class="info">
+                                    <h3 class="name" th:text="${orderDetail.product.name}"></h3>
+                                    <p class="type" th:text="${orderDetail.product.category.name}"></p>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="quantity" th:text="${orderDetail.quantity}"></span>
+                            </td>
+                            <td>
+                                <span class="price">$</span>
+                                <span class="price" th:text="${orderDetail.quantity * orderDetail.product.price}"></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="user__order-confirm-bottom">
+                    <div class="row-grid">
+                        <div class="col-grid l-grid-6">
+                            <h3 class="title">
+                                <span style="color: #555; font-weight: 700">BILLED & SHIPPED TO: </span>
+                            </h3>
+
+                            <div class="info">
+                                <span th:text="${customer.name}"></span>
+                                <span th:text="${customer.address}"></span>
+                                <span th:text="${customer.province.name}"></span>
+                                <span th:text="${customer.phoneNumber}"></span>
+                                <span th:text="${customer.email}"></span>
+                            </div>
+                        </div>
+                        <div class="col-grid l-grid-4">
+                            <span>Item Subtotal</span>
+                            <span>Shipping & Handling</span>
+                            <span>Tax</span>
+                            <span class="total">Total</span>
+                        </div>
+                        <div class="col-grid l-grid-2 left-area">
+                            <div class="d-flex align-items-center">
+                                <span>$</span>
+                                <span th:text="${totalPrice.totalPrice(session.orderId , orderDetails.getOrderDetailByOrderId(session.orderId))}"></span>
+                            </div>
+                            <span>$0.00</span>
+                            <span>$0.00</span>
+                            <div class="d-flex align-items-center">
+                                <span>$</span>
+                                <span class="total" th:text="${totalPrice.totalPrice(session.orderId , orderDetails.getOrderDetailByOrderId(session.orderId))}"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer th:replace="~{layout/footer::footer}"></footer>
+    </div>
+</body>
+</html>

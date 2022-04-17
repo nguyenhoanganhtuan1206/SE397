@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+
+    <!-- CSS-->
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/grid.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/base.css}">
+
+    <!-- Framework-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" th:href="@{/assets/icon/themify-icons/themify-icons.css}">
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="management-account__container" style="overflow: hidden">
+    <div class="row-grid" style="overflow: hidden">
+        <div class="col-grid l-grid-2 pl-0 pr-0">
+            <div th:replace="~{layout/header::header__admin}"></div>
+        </div>
+
+        <div class="col-grid l-grid-10">
+            <div th:replace="~{layout/header::header__admin-right}"></div>
+
+            <div class="info-orders approval-order">
+                <h3 class="title d-flex align-items-center justify-content-between">
+                    <div>
+                        <span>Đơn hàng của </span>
+                        <span th:text="${customer.name}"></span>
+                        <span>:</span>
+                        <span th:text="${orderDetails.size()}"></span>
+                        <span>đơn hàng</span>
+                    </div>
+
+                    <button th:if="${!order.status}" class="button btn-confirm__order">Xác nhận đơn hàng</button>
+                </h3>
+
+                <div class="orders-body">
+                    <div class="header-order">
+                        <div>
+                            <div class="order_id">
+                                <span>#</span>
+                                <span th:text="${order.id}"></span>
+                            </div>
+
+                            <div class="time" th:text="${order.localDate}"></div>
+                        </div>
+
+                        <span th:if="${!order.status}" class="confirm">Chưa xác nhận</span>
+                        <span th:if="${order.status}" class="confirm">Đã xác nhận</span>
+                    </div>
+
+                    <ul class="order-items-list">
+                        <li th:each="orderDetail : ${orderDetails}">
+                            <img th:src="${orderDetail.product.image}">
+
+                            <div class="content">
+                                <div>
+                                    <h3 class="name">Surface</h3>
+                                    <div class="quantity">
+                                        <span>x</span>
+                                        <span th:text="${orderDetail.quantity}">1</span>
+                                    </div>
+
+                                    <span class="type" th:text="${orderDetail.product.category.name}"></span>
+                                    <div class="price mt-3">
+                                        <span>$</span>
+                                        <span th:text="${orderDetail.quantity * orderDetail.product.price}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="order-items-footer d-flex justify-content-end">
+                        <div class="d-flex align-items-center">
+                            <span class="text">Tổng đơn hàng: </span>
+                            <div class="price">
+                                <span>$</span>
+                                <span th:text="${totalPrice}"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="~{layout/footer::footer__admin}"></div>
+        </div>
+    </div>
+
+    <div class="modal__common">
+        <div class="modal__overlay"></div>
+
+        <div class="modal__body modal-confirm__order">
+            <form method="post" class="form__confirm-modal" th:action="@{/admin/approval-order/{id}/{orderId}/detail(id=${order.user.id} , orderId=${order.id})}" th:object="${order}">
+                <div class="header d-flex align-items-center justify-content-between w-100" style="background-color: #fff">
+                    <h3 class="title" style="font-size: 2.3rem; margin: 0">Confirm Order</h3>
+                    <i class="cancel ti-close" style="font-size: 1.4rem; padding: 8px"></i>
+                </div>
+
+                <p class="text">Would you like to confirm this order?</p>
+
+                <input type="hidden" th:field="*{id}">
+                <div class="d-flex align-items-center justify-content-end">
+                    <button type="submit" class="button confirm btn-success">Confirm</button>
+                    <button id="btn__cancel-confirm" class="button cancel btn-danger">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" th:src="@{/assets/js/main.js}"/>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Management Account</title>
+
+    <!-- CSS-->
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/grid.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/base.css}">
+
+    <!-- Framework-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" th:href="@{/assets/icon/themify-icons/themify-icons.css}">
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="main">
+    <div class="admin__container">
+        <div class="row-grid" style="overflow: hidden">
+            <div class="col-grid l-grid-2">
+                <div th:replace="~{layout/header::header__admin}">
+                </div>
+            </div>
+
+            <div class="col-grid l-grid-10">
+                <div th:replace="~{layout/header::header__admin-right}"></div>
+
+                <div class="management-account__group mt-5" style="overflow: hidden;">
+                    <h3 class="title">List Users</h3>
+
+                    <form th:action="@{/admin/approval-order/search}" method="post" class="admin__search-container">
+                        <div class="row-grid">
+                            <div class="col-grid l-grid-6 d-flex justify-content-center flex-column">
+                                <h3>Tìm kiếm</h3>
+                                <div class="admin__search-group">
+                                    <i for="nameSearch" class="ti-search"></i>
+                                    <input type="text" class="input" name="nameSearch"
+                                           placeholder="Search customer's name">
+                                </div>
+                            </div>
+
+                            <div class="col-grid l-grid-3 d-flex justify-content-center flex-column">
+                                <h3>Duyệt đơn hàng</h3>
+                                <div>
+                                    <select class="input" style="border-radius: 10px; padding: 10px;"
+                                            name="orderStatus">
+                                        <option value="0">Chưa duyệt</option>
+                                        <option value="1">Đã duyệt</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-grid l-grid-3 d-flex justify-content-center flex-column">
+                                <button type="submit" class="button btn-form__search">Search</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <table class="admin__table">
+                        <tr>
+                            <th>Tên khách hàng</th>
+                            <th>Email</th>
+                            <th>Địa chỉ</th>
+                            <th>Tỉnh / Thành</th>
+                            <th>Số điện thoại</th>
+                            <th>Action</th>
+                        </tr>
+
+                        <tr th:each="user : ${users}">
+                            <td th:text="${user.name}"></td>
+                            <td th:text="${user.email}"></td>
+                            <td th:text="${user.address}"></td>
+                            <td th:text="${user.province.name}"></td>
+                            <td th:text="${user.phoneNumber}"></td>
+                            <td>
+                                <a target="_blank"
+                                   th:href="@{/admin/detail-user/{id}(id=${user.id})}"
+                                   style="font-size: 1.4rem;color: #fff;padding: 10px 5px; border-radius: 5px;"
+                                   class="button btn-approval">Xem chi tiết</a>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div class="paging d-flex align-items-center justify-content-center mt-5">
+                        <a class="paging-btn" th:if="${currentPage > 1}" th:href="@{/page/1}">
+                            <i class="fa-solid fa-angles-left"></i>
+                        </a>
+
+                        <a class="paging-btn" th:if="${currentPage > 1}" th:href="@{'/page/' + ${currentPage - 1}}">
+                            <i class="fa-solid fa-angle-left"></i>
+                        </a>
+
+                        <span th:each="i : ${#numbers.sequence(1 , totalPages)}">
+                    <a class="paging-btn" th:if="${i != currentPage}" th:href="@{'/page/' + ${i}}">[[${i}]]</a>
+                    <span class="paging-btn current" th:unless="${i != currentPage}">[[${i}]]</span></span>
+
+                        <a class="paging-btn" th:if="${currentPage < totalPages}"
+                           th:href="@{'/page/' + ${currentPage + 1}}">
+                            <i class="fa-solid fa-angle-right"></i>
+                        </a>
+
+                        <a class="paging-btn" th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${totalPages}}">
+                            <i class="fa-solid fa-angles-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div th:replace="~{layout/footer::footer__admin}"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

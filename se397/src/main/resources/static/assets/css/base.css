@@ -1,0 +1,211 @@
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #081828;
+    --primary-color-blue: #0167f3;
+    --white-color: #fff;
+    --border-color: #dadada;
+
+    --purpose-color: #9b51e0;
+    --green-color: #8bc38a;
+    --blue-color: #438ffe;
+    --green-second-color: #83bcbd;
+    --yellow-color: #f2994a;
+}
+
+html {
+    font-family: manrope,sans-serif;
+    font-size: 62.5%;
+}
+
+a {
+    transition: all 0.3s;
+}
+
+a:hover {
+    color: var(--primary-color-blue) !important;
+}
+
+ul {
+    padding-left: 0;
+    margin: 0;
+}
+
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.show {
+    display: block !important;
+}
+
+.section {
+    padding: 100px 0;
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    background-color: var(--primary-color-blue);
+    font-size: 1.4rem;
+    border: none;
+    outline: none;
+    transition: all 0.3s;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.button:hover {
+    color: var(--white-color) !important;
+    background-color: var(--primary-color) !important;
+}
+
+.input {
+    width: 100%;
+    flex: 1;
+    height: 45px;
+    font-size: 1.4rem;
+    outline: none;
+    border: 1px solid var(--border-color);
+    outline: none;
+}
+
+.section-title h2 {
+    font-size: 3rem;
+    font-weight: 800;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.section-title h2::before {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    content: "";
+    background-color: var(--primary-color-blue);
+    margin-left: -25px;
+    border-radius: 2px;
+    height: 2px;
+    width: 50px;
+}
+
+.section-title p {
+    font-size: 14px;
+    color: #888;
+    font-weight: 600;
+}
+
+.section-title span {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--primary-color-blue);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Animation */
+@keyframes modalAnimation {
+    from {
+        transform: translateY(-200px);
+    }
+    to {
+        transform: translate(0);
+    }
+}
+
+@-webkit-keyframes animateTop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+@keyframes animateTop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+@-webkit-keyframes rotating /* Safari and Chrome */ {
+    from {
+        -webkit-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+@keyframes rotating {
+    from {
+        -ms-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -ms-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+.rotating {
+    -webkit-animation: rotating 4s linear infinite;
+    -moz-animation: rotating 4s linear infinite;
+    -ms-animation: rotating 4s linear infinite;
+    -o-animation: rotating 4s linear infinite;
+    animation: rotating 4s linear infinite;
+}
+
+/* Modal */
+.modal__common {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    display: none;
+}
+
+.modal__overlay {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.2);
+    height: 100%;
+    width: 100%;
+}
+
+.modal__body {
+    position: relative;
+    margin: auto;
+    z-index: 1;
+}
+
+.modal__common.open {
+    display: flex;
+}

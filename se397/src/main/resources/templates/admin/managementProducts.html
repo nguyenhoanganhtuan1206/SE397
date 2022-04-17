@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Management Products</title>
+
+    <!-- CSS-->
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/grid.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/base.css}">
+
+    <!-- Framework-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" th:href="@{/assets/icon/themify-icons/themify-icons.css}">
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="management-account__container" style="overflow: hidden;">
+    <div class="row-grid" style="overflow: hidden">
+        <div class="col-grid l-grid-2 pl-0 pr-0">
+            <div th:replace="~{layout/header::header__admin}">
+            </div>
+        </div>
+
+        <div class="col-grid l-grid-10">
+            <div th:replace="~{layout/header::header__admin-right}"></div>
+
+            <div class="management-account__group mt-5 mt-5">
+                <h3 class="title">List Products</h3>
+
+                <form th:action="@{/admin/management-products/search}" method="post" class="admin__search-container">
+                    <div class="row-grid">
+                        <div class="col-grid l-grid-6 d-flex justify-content-center flex-column">
+                            <h3>Tìm kiếm</h3>
+                            <div class="admin__search-group">
+                                <i for="nameSearch" class="ti-search"></i>
+                                <input type="text" class="input" name="nameSearch" placeholder="Search product's name">
+                            </div>
+                        </div>
+
+                        <div class="col-grid l-grid-3 d-flex justify-content-center flex-column">
+                            <h3>Duyệt đơn hàng</h3>
+                            <div>
+                                <select class="input" style="border-radius: 10px; padding: 10px;" name="orderStatus">
+                                    <option value="Còn hàng">Còn hàng</option>
+                                    <option value="Hết hàng">Hết hàng</option>
+                                    <option th:each="cate : ${categories}" th:value="${cate.id}" th:text="${cate.name}"></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-grid l-grid-3 d-flex justify-content-center flex-column">
+                            <button type="submit" class="button btn-form__search">Search</button>
+                        </div>
+                    </div>
+                </form>
+
+                <table class="admin__table">
+                    <tr>
+                        <th>Tên sản phẩm</th>
+                        <th>Giá</th>
+                        <th>Loại hàng</th>
+                        <th>Số lượng</th>
+                        <th>Tình trạng</th>
+                        <th>Action</th>
+                    </tr>
+
+                    <tr th:each="product : ${products}">
+                        <td th:text="${product.name}"></td>
+                        <td>
+                            <span>$</span>
+                            <span th:text="${product.price}"></span>
+                        </td>
+                        <td th:text="${product.category.name}"></td>
+                        <td th:text="${product.quantity}"></td>
+                        <td th:if="${product.quantity == 0}" class="text-danger font-weight-bold">Hết hàng</td>
+                        <td th:if="${product.quantity != 0}" class="text-success font-weight-bold">Còn hàng</td>
+
+                        <td>
+                            <a target="_blank"
+                               th:href="@{/admin/product-detail/{id}/detail(id=${product.id})}"
+                               style="font-size: 1.4rem;color: #fff;padding: 10px 5px; border-radius: 5px;"
+                               class="button btn-approval">Xem chi tiết</a>
+                        </td>
+                    </tr>
+                </table>
+
+                <div th:if="${currentPage}" class="paging d-flex align-items-center justify-content-center mt-5">
+                    <a class="paging-btn" th:if="${currentPage > 1}" th:href="@{/admin/management-products/page/1}">
+                        <i class="fa-solid fa-angles-left"></i>
+                    </a>
+
+                    <a class="paging-btn" th:if="${currentPage > 1}" th:href="@{'/admin/management-products/page/' + ${currentPage - 1}}">
+                        <i class="fa-solid fa-angle-left"></i>
+                    </a>
+
+                    <span th:each="i : ${#numbers.sequence(1 , totalPages)}">
+                    <a class="paging-btn" th:if="${i != currentPage}" th:href="@{'/admin/management-products/page/' + ${i}}">[[${i}]]</a>
+                    <span class="paging-btn current" th:unless="${i != currentPage}">[[${i}]]</span>
+                </span>
+
+                    <a class="paging-btn" th:if="${currentPage < totalPages}"
+                       th:href="@{'/admin/management-products/page/' + ${currentPage + 1}}">
+                        <i class="fa-solid fa-angle-right"></i>
+                    </a>
+
+                    <a class="paging-btn" th:if="${currentPage < totalPages}" th:href="@{'/admin/management-products/page/' + ${totalPages}}">
+                        <i class="fa-solid fa-angles-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div th:replace="~{layout/footer::footer__admin}"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

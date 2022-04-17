@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+
+    <!-- CSS-->
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/grid.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/base.css}">
+
+    <!-- Framework-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" th:href="@{/assets/icon/themify-icons/themify-icons.css}">
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+    <!-- Library -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</head>
+<body>
+<!--    Header-->
+<div id="main">
+    <header th:replace="~{layout/header::header}"></header>
+
+    <!-- Content area -->
+    <div class="content__area">
+        <div class="container">
+            <div class="row-grid">
+                <div class="col-grid l-grid-8">
+                    <div id="slideContentProducts" class="carousel slide" data-ride="carousel">
+                        <!-- The slideshow -->
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <div class="slide-content__area-container">
+                                    <img src="/assets/img/product/slider-bg1.jpg" alt="">
+
+                                    <div class="content">
+                                        <span>No restocking fee ($35 savings)</span>
+                                        <h2>M75 Sport Watch</h2>
+                                        <p>Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor
+                                            incididunt ut
+                                            labore dolore magna aliqua.</p>
+
+                                        <h3 class="price">
+                                            <span>Combo Only: </span>
+                                            $320.99
+                                        </h3>
+
+                                        <a href="" class="button content__area-btn">Shop Now</a>
+                                    </div>
+
+                                    <i class="content__area-icon right ti-angle-right" href="#slideContentProducts"
+                                       data-slide="next"></i>
+                                    <i class="content__area-icon left ti-angle-left" href="#slideContentProducts"
+                                       data-slide="prev"></i>
+                                </div>
+                            </div>
+
+                            <div class="carousel-item">
+                                <div class="slide-content__area-container">
+                                    <img src="/assets/img/product/slider-bg2.jpg" alt="">
+
+                                    <div class="content">
+                                        <span>Big Sale Offer</span>
+                                        <h2>Get the Best Deal on CCTV Camera</h2>
+                                        <p>Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor
+                                            incididunt ut
+                                            labore dolore magna aliqua.</p>
+
+                                        <h3 class="price">
+                                            <span>Combo Only: </span>
+                                            $590.00
+                                        </h3>
+
+                                        <a href="" class="button content__area-btn">Shop Now</a>
+                                    </div>
+
+                                    <i class="content__area-icon right ti-angle-right" href="#slideContentProducts"
+                                       data-slide="next"></i>
+                                    <i class="content__area-icon left ti-angle-left" href="#slideContentProducts"
+                                       data-slide="prev"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-grid l-grid-4">
+                    <div class="content__area-right-area">
+                        <div class="top position-relative">
+                            <img class="content__area-right-area-top-img"
+                                 src="/assets/img/product/slider-bnr.jpg" alt="">
+                            <div class="content">
+                                <span>New line required</span>
+                                <h2>iPhone 12 Pro Max</h2>
+                                <h3>$259.99</h3>
+                            </div>
+                        </div>
+
+                        <div class="bottom bottom-img">
+                            <div class="content">
+                                <h2>Weekly Sale!</h2>
+                                <p>Saving up to 50% off all online store items this week.</p>
+                                <a href="" class="bottom__btn">Shop Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-product section">
+        <div class="container">
+            <div class="section-title text-center">
+                <h2>Best Seller</h2>
+                <p>Dòng sản phảm <span>chất lượng</span> tốt và <span>giá rẻ</span></p>
+            </div>
+
+            <div class="row-grid">
+                <div th:each="product : ${products}" class="col-grid l-grid-3">
+                    <div class="product-item">
+                        <div class="product-img">
+                            <span th:if="${product.promotion != null}" class="product__sale">
+                                <span class="product__sale-percent" th:if="${product.promotion != null}" th:text="${#numbers.formatDecimal(product.promotion.percent , 0 , 'COMMA', 0, 'POINT')}"></span>
+                                <span class="product__sale-percent">%</span>
+                            </span>
+                            <img th:src="${product.getImage()}">
+
+                            <form class="form-add__cart" th:action="@{/{id}/add-to-cart(id=${product.getId()})}"
+                                  method="post">
+                                <button type="submit" class="button btn-add-to-cart">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    Add To Cart
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="product-content">
+                            <div class="category" th:text="${product.getCategory().name}">Laptop</div>
+                            <div class="name">
+                                <a th:href="@{/{id}/product-detail(id=${product.id})}" th:text="${product.getName()}"></a>
+                            </div>
+                            <div class="rate">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+
+                                <span>5.0 Review(s)</span>
+                            </div>
+
+                            <div class="price">
+                                <div th:if="${product.promotion == null}">
+                                    <span>$</span>
+                                    <span th:text="${product.getPrice()}"></span>
+                                </div>
+
+                                <div th:if="${product.promotion != null}">
+                                    <span class="price__old">$</span>
+                                    <span th:text="${product.getPrice()}" class="price__old"></span>
+                                </div>
+                                <div th:if="${product.promotion != null}">
+                                    <span>$</span>
+                                    <span th:text="${@formatNumberRound.roundNumber(product.price , product.promotion.percent)}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="paging d-flex align-items-center justify-content-center mt-5">
+                <a class="paging-btn" th:if="${currentPage > 1}" th:href="@{/page/1}">
+                    <i class="fa-solid fa-angles-left"></i>
+                </a>
+
+                <a class="paging-btn" th:if="${currentPage > 1}" th:href="@{'/page/' + ${currentPage - 1}}">
+                    <i class="fa-solid fa-angle-left"></i>
+                </a>
+
+                <span th:each="i : ${#numbers.sequence(1 , totalPages)}">
+                    <a class="paging-btn" th:if="${i != currentPage}" th:href="@{'/page/' + ${i}}">[[${i}]]</a>
+                    <span class="paging-btn current" th:unless="${i != currentPage}">[[${i}]]</span>
+                </span>
+
+                <a class="paging-btn" th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${currentPage + 1}}">
+                    <i class="fa-solid fa-angle-right"></i>
+                </a>
+
+                <a class="paging-btn" th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${totalPages}}">
+                    <i class="fa-solid fa-angles-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="~{layout/footer::footer}"></footer>
+</div>
+</body>
+<script type="text/javascript">
+
+</script>
+<script type="text/javascript" th:src="@{/assets/js/main.js}"/>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+
+    <!-- CSS-->
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/grid.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/base.css}">
+
+    <!-- Framework-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" th:href="@{/assets/icon/themify-icons/themify-icons.css}">
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+    <!-- Library -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</head>
+<body>
+<div id="main">
+    <header th:replace="~{layout/header::header}"></header>
+
+    <div class="header__footer">
+        <div class="container d-flex align-item-center justify-content-between">
+            <h3 class="left-area">
+                <span th:text="${product.name}"></span>
+            </h3>
+
+            <div class="right-area">
+                <a href="/">
+                    <i class="fas fa-home"></i>
+                    Home
+                </a>
+
+                <i class="right ti-angle-right"></i>
+                <span th:text="${product.name}"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="product__detail-container section">
+        <div class="container">
+            <div class="row-grid">
+                <div class="l-grid-6">
+                    <div class="product__detail-img-group">
+                        <img th:src="${product.image}" class="product__detail-img">
+                    </div>
+                </div>
+                <div class="pl-5 l-grid-6 d-flex flex-column justify-content-between">
+                    <h1 th:text="${product.name}"></h1>
+
+                    <div class="rate">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+
+                        <span class="reviews">
+                            <span>Reviews: </span>
+                            <span th:text="${evaluations.size()}">39</span>
+                        </span>
+
+                        <span class="sold">
+                            <span>Sold: </span>
+                            <span th:text="${quantitySold}"></span>
+                        </span>
+                    </div>
+
+                    <div class="price">
+                        <div th:if="${product.promotion == null}">
+                            <span>$</span>
+                            <span th:text="${product.getPrice()}"></span>
+                        </div>
+
+                        <div th:if="${product.promotion != null}">
+                            <span class="price__old">$</span>
+                            <span th:text="${product.getPrice()}" class="price__old"></span>
+                        </div>
+                        <div th:if="${product.promotion != null}" class="d-flex align-items-center">
+                            <span>$</span>
+                            <span th:text="${@formatNumberRound.roundNumber(product.price , product.promotion.percent)}"></span>
+
+                            <div class="sale__detail ml-3 d-flex align-items-center">
+                                <span>(</span>
+                                <span th:text="${#numbers.formatDecimal(product.promotion.percent , 0 , 'COMMA', 0, 'POINT')}"></span>
+                                <span>% off)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="type">
+                        <span>Type: </span>
+                        <span style="font-weight: 600;" th:text="${product.category.name}"></span>
+                    </p>
+
+                    <form th:action="@{/{id}/detail/add-to-cart(id=${product.id})}" method="post"
+                          class="d-flex align-items-center mt-5">
+                        <button class="button btn-add-to-cart">
+                            <i class="ti-shopping-cart mr-3"></i>
+                            Add to cart
+                        </button>
+                    </form>
+
+                    <div class="policy mt-5">
+                        <div class="row-grid">
+                            <div class="policy__item col-grid l-grid-4 text-center d-flex flex-column align-items-center">
+                                <img src="/assets/img/product/product-detail/icon1.svg">
+
+                                <span style="margin-top: 12px;">Supporting Policy - Refund money in 24 hours</span>
+                            </div>
+
+                            <div class="policy__item col-grid l-grid-4 text-center d-flex flex-column align-items-center">
+                                <img src="/assets/img/product/product-detail/icon4.svg">
+
+                                <span>Supporting Policy - Free shipping for domestic orders</span>
+                            </div>
+
+                            <div class="policy__item col-grid l-grid-4 text-center d-flex flex-column align-items-center">
+                                <img src="/assets/img/product/product-detail/icon5.svg">
+
+                                <span>Supporting Policy - 60 days exchange</span>
+                            </div>
+
+                            <div class="policy__item col-grid l-grid-4 text-center d-flex flex-column align-items-center">
+                                <img src="/assets/img/product/product-detail/icon6.svg">
+
+                                <span>Supporting Policy - Delivery from 2-5 days</span>
+                            </div>
+
+                            <div class="policy__item col-grid l-grid-4 text-center d-flex flex-column align-items-center">
+                                <img src="/assets/img/product/product-detail/icon2.svg">
+
+                                <span>Hotline 1900.27.27.37 - Support from 8h-22h daily</span>
+                            </div>
+
+                            <div class="policy__item col-grid l-grid-4 text-center d-flex flex-column align-items-center">
+                                <i style="font-size: 3.2rem;" class="ti-credit-card"></i>
+
+                                <span>Supporting Policy - Can payment by credit card</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="product__detail-recommend section">
+        <div class="container">
+            <div class="section-title text-center">
+                <h2 style="font-weight: 400">You May Also Like</h2>
+            </div>
+
+            <div class="row-grid">
+                <div th:each="product : ${productsRecommend}" class="col-grid l-grid-3">
+                    <div class="product-item">
+                        <div class="product-img">
+                            <span th:if="${product.promotion != null}" class="product__sale">
+                                <span class="product__sale-percent" th:if="${product.promotion != null}"
+                                      th:text="${#numbers.formatDecimal(product.promotion.percent , 0 , 'COMMA', 0, 'POINT')}"></span>
+                                <span class="product__sale-percent">%</span>
+                            </span>
+                            <img th:src="${product.getImage()}">
+
+                            <form class="form-add__cart" th:action="@{/{id}/detail/add-to-cart(id=${product.id})}"
+                                  method="post">
+                                <button type="submit" class="button btn-add-to-cart">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    Add To Cart
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="product-content">
+                            <div class="category" th:text="${product.getCategory().name}">Laptop</div>
+                            <div class="name">
+                                <a th:href="@{/{id}/product-detail(id=${product.id})}"
+                                   th:text="${product.getName()}"></a>
+                            </div>
+                            <div class="rate">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+
+                                <span>5.0 Review(s)</span>
+                            </div>
+
+                            <div class="price">
+                                <div th:if="${product.promotion == null}">
+                                    <span>$</span>
+                                    <span th:text="${product.getPrice()}"></span>
+                                </div>
+
+                                <div th:if="${product.promotion != null}">
+                                    <span class="price__old">$</span>
+                                    <span th:text="${product.getPrice()}" class="price__old"></span>
+                                </div>
+                                <div th:if="${product.promotion != null}">
+                                    <span>$</span>
+                                    <span th:text="${@formatNumberRound.roundNumber(product.price , product.promotion.percent)}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${evaluations.size() != 0}" class="feedback__product-container section">
+        <div class="container">
+            <!-- Feedback -->
+            <div class="rate d-flex flex-column justify-content-center align-items-center">
+                <h3>
+                    <span th:text="${#numbers.formatDecimal(rating , 0 , 'COMMA', 1, 'POINT')}"></span>
+                </h3>
+                <div th:if="${rating} >= 3.1 and ${rating} < 4" class="d-flex align-items-center">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star-half-stroke"></i>
+                    <i class="fa-regular fa-star"></i>
+                </div>
+
+                <div th:if="${rating} >= 2.1 and ${rating} < 3" class="d-flex align-items-center">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star-half-stroke"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                </div>
+
+                <div th:if="${rating} >= 1.1 and ${rating} < 2" class="d-flex align-items-center">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star-half-stroke"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                </div>
+
+                <div th:if="${rating} >= 0.1 and ${rating} < 1" class="d-flex align-items-center">
+                    <i class="fa-solid fa-star-half-stroke"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                </div>
+
+                <div th:if="${rating} == 1" class="d-flex align-items-center">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                </div>
+
+                <div th:if="${rating} == 2" class="d-flex align-items-center">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                </div>
+
+                <div th:if="${rating} == 3" class="d-flex align-items-center">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                </div>
+
+                <div th:if="${rating} == 4" class="d-flex align-items-center">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                </div>
+
+                <div th:if="${rating} == 5" class="d-flex align-items-center">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                </div>
+
+                <p class="info-review">
+                    <span>based on </span>
+                    <span th:text="${evaluations.size()}"></span>
+                    <span> reviews</span>
+                </p>
+            </div>
+
+            <ul class="feedback-user__list">
+                <li th:each="evaluation : ${evaluations}">
+                    <div class="header">
+                        <div class="d-flex">
+                            <div class="ava__user">
+                                <span th:text="${lastName.getLastNameUser(evaluation.user.name)}"></span>
+                            </div>
+                            <div class="d-flex flex-column ml-3">
+                                <div class="info-user">
+                                    <h4 class="name" th:text="${evaluation.user.name}"></h4>
+                                    <div th:if="${evaluation.rate} >= 3.1 and ${evaluation.rate} < 4" class="d-flex align-items-center">
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star-half-stroke"></i>
+                                        <i class="fa-regular fa-star"></i>
+                                    </div>
+
+                                    <div th:if="${evaluation.rate} >= 2.1 and ${evaluation.rate} < 3" class="d-flex align-items-center">
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star-half-stroke"></i>
+                                        <i class="fa-regular fa-star"></i>
+                                        <i class="fa-regular fa-star"></i>
+                                    </div>
+
+                                    <div th:if="${evaluation.rate} >= 1.1 and ${evaluation.rate} < 2" class="d-flex align-items-center">
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star-half-stroke"></i>
+                                        <i class="fa-regular fa-star"></i>
+                                        <i class="fa-regular fa-star"></i>
+                                        <i class="fa-regular fa-star"></i>
+                                    </div>
+
+                                    <div th:if="${evaluation.rate} >= 0.1 and ${evaluation.rate} < 1" class="d-flex align-items-center">
+                                        <i class="fa-solid fa-star-half-stroke"></i>
+                                        <i class="fa-regular fa-star"></i>
+                                        <i class="fa-regular fa-star"></i>
+                                        <i class="fa-regular fa-star"></i>
+                                        <i class="fa-regular fa-star"></i>
+                                    </div>
+
+                                    <div th:if="${evaluation.rate} == 1" class="d-flex align-items-center">
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-regular fa-star"></i>
+                                        <i class="fa-regular fa-star"></i>
+                                        <i class="fa-regular fa-star"></i>
+                                        <i class="fa-regular fa-star"></i>
+                                    </div>
+
+                                    <div th:if="${evaluation.rate} == 2" class="d-flex align-items-center">
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-regular fa-star"></i>
+                                        <i class="fa-regular fa-star"></i>
+                                        <i class="fa-regular fa-star"></i>
+                                    </div>
+
+                                    <div th:if="${evaluation.rate} == 3" class="d-flex align-items-center">
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-regular fa-star"></i>
+                                        <i class="fa-regular fa-star"></i>
+                                    </div>
+
+                                    <div th:if="${evaluation.rate} == 4" class="d-flex align-items-center">
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-regular fa-star"></i>
+                                    </div>
+
+                                    <div th:if="${evaluation.rate} == 5" class="d-flex align-items-center">
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                    </div>
+                                </div>
+                                <p class="content-review" th:text="${evaluation.content}">
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="time" th:text="${#temporals.format(evaluation.localDate,'dd-MM-yyyy')}"></div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+    <footer th:replace="~{layout/footer::footer}"></footer>
+</div>
+</body>
+</html>
