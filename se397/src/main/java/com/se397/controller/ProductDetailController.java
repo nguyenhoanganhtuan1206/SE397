@@ -140,14 +140,6 @@ public class ProductDetailController {
             cart.setQuantity(cart.getQuantity() + 1);
             carts.replace(id, carts.get(id), cart);
         }
-
-        model.addAttribute("addToCart", carts);
-        model.addAttribute("evaluations" , evaluationRepository.getEvaluationsByProductId(id));
-        model.addAttribute("product", product);
-        model.addAttribute("categories", categoryService.getList());
-        model.addAttribute("productsRecommend" , productRepository.getProductByCategory(product.getCategory().getId()));
-        model.addAttribute("quantitySold", orderDetailRepository.getQuantitySold(product.getId()));
-        model.addAttribute("cart", new Cart());
-        return "productDetail";
+        return "redirect:/" + id + "/product-detail";
     }
 }

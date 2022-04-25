@@ -1,8 +1,10 @@
 package com.se397.controller;
 
 import com.se397.model.Cart;
+import com.se397.model.Evaluation;
 import com.se397.model.Product;
 import com.se397.model.User;
+import com.se397.repository.EvaluationRepository;
 import com.se397.service.CategoryService;
 import com.se397.service.ProductService;
 import com.se397.service.UserService;
@@ -39,6 +41,9 @@ public class HomeController {
     @Autowired
     private CategoryService categoryService = new CategoryService();
 
+    @Autowired
+    private EvaluationRepository evaluationRepository;
+
     @ModelAttribute("carts")
     public Map<Integer, Cart> setUpHashCart() {
         return new HashMap<>();
@@ -67,6 +72,7 @@ public class HomeController {
         model.addAttribute("totalItems", totalItems);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("currentPage" , currentPage);
+        model.addAttribute("rating" , evaluationRepository);
         model.addAttribute("cart", new Cart());
         return "homePage";
     }

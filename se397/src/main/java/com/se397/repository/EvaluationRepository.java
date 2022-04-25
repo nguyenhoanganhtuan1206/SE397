@@ -15,4 +15,5 @@ public interface EvaluationRepository extends JpaRepository<Evaluation, Integer>
     /* Get rate review of product by product id */
     @Query(value = "select sum(evaluation.rate) / count(evaluation.product_id) from evaluation where product_id = ?1" , nativeQuery=true)
     Double getRateReviewByProductId(int id);
+
 }

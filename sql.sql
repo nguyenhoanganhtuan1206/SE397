@@ -118,6 +118,18 @@ begin
 end //
 delimiter ;
 
+/* Dem so luong orderdetail */
+select count(order_id) from orderdetail where order_id =6;
+
+/* Tinh review cura product */
+select sum(evaluation.rate) / count(evaluation.product_id) from evaluation where product_id = 7;
+
+/* Xoa order by user id */
+delete from orders where id = 7;
+
+/* Tinh rate */
+select sum(rate) / count(product_id) from evaluation where product_id = 7;
+
 
 
 

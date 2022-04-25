@@ -53,8 +53,7 @@
                 <div class="row-grid">
                     <div class="col-grid l-grid-6">
                         <div class="personal-info__payment">
-                            <h3>Thông tin vận chuyển</h3>
-
+                            <h3>Delivery Information</h3>
                             <div class="personal-info__payment-group d-flex align-item-center justify-content-between">
                                 <input type="text" th:field="*{name}" class="input" placeholder="Full name">
                                 <input type="text" th:field="*{phoneNumber}" class="input" placeholder="Phone number">
@@ -67,11 +66,59 @@
                                             th:value="${pro.id}"></option>
                                 </select>
                             </div>
+                        </div>
 
-                            <button type="submit" class="button btn-payment">
-                                <i class="far fa-credit-card"></i>
-                                Payment
-                            </button>
+                        <div class="payment__method">
+                            <h3>Payment method</h3>
+                            <ul class="row-grid">
+                                <div class="col-grid l-grid-6">
+                                    <li class="payment__method-item">
+                                        <i class="fa-solid fa-credit-card"></i>
+                                        <h3>Credit / Debit Card</h3>
+                                    </li>
+                                </div>
+
+                                <div class="col-grid l-grid-6">
+                                    <li class="payment__method-item">
+                                        <img src="/assets/img/payment_method/COD.svg">
+                                        <h3 class="icon">Cash On Delivery</h3>
+                                    </li>
+                                </div>
+
+                                <div class="col-grid l-grid-6">
+                                    <li class="payment__method-item">
+                                        <img src="/assets/img/payment_method/visa.png">
+                                        <h3>Visa Pay</h3>
+                                    </li>
+                                </div>
+
+                                <div class="col-grid l-grid-6">
+                                    <li class="payment__method-item">
+                                        <i class="paypal fa-brands fa-paypal"></i>
+                                        <h3>PayPal</h3>
+                                    </li>
+                                </div>
+
+                                <div class="col-grid l-grid-6">
+                                    <li class="payment__method-item">
+                                        <img src="/assets/img/payment_method/master-card.png">
+                                        <h3>Master Card</h3>
+                                    </li>
+                                </div>
+
+                                <div class="col-grid l-grid-6">
+                                    <li class="payment__method-item">
+                                        <img src="/assets/img/payment_method/amazon.jpg">
+                                        <h3>Amazon</h3>
+                                    </li>
+                                </div>
+                            </ul>
+
+                            <div class="payment__method-info-user">
+                                <label> Cardholder Name
+                                    <input type="text">
+                                </label>
+                            </div>
                         </div>
                     </div>
                     <div class="col-grid l-grid-6">
@@ -83,12 +130,14 @@
                                     <div class="cart-item-payment-img">
                                         <img th:src="${productCart.getValue().image}">
 
-                                        <span class="quantity-payment" th:text="${productCart.getValue().getQuantity()}"></span>
+                                        <span class="quantity-payment"
+                                              th:text="${productCart.getValue().getQuantity()}"></span>
                                     </div>
 
                                     <div class="info">
                                         <div>
-                                            <h3 class="name" th:text="${productCart.getValue().getName()}">Surface Pro</h3>
+                                            <h3 class="name" th:text="${productCart.getValue().getName()}">Surface
+                                                Pro</h3>
 
                                             <span class="type">Screen</span>
                                         </div>
@@ -98,7 +147,8 @@
                                                     <i class="fas fa-minus"></i>
                                                 </a>
 
-                                                <p class="quantity" id="cart-quantity" th:text="${productCart.getValue().getQuantity()}">3</p>
+                                                <p class="quantity" id="cart-quantity"
+                                                   th:text="${productCart.getValue().getQuantity()}">3</p>
 
                                                 <a th:href="@{/{id}/increase-product(id=${productCart.getValue().getId()})}">
                                                     <i class="fas fa-plus"></i>
@@ -115,12 +165,11 @@
                                         <i class="close-icon ti-close"></i>
                                     </a>
                                 </li>
-
                             </ul>
 
                             <div class="cart-item-payment-price">
                                 <div class="d-flex align-item-center justify-content-between">
-                                    <span>Tạm tính</span>
+                                    <span>Current Fee</span>
                                     <div>
                                         <span>$</span>
                                         <span th:text="${cart.totalPriceProduct(addToCart)}"></span>
@@ -128,8 +177,8 @@
                                 </div>
 
                                 <div class="d-flex align-item-center justify-content-between">
-                                    <span>Phí giao hàng</span>
-                                    <span>Miễn phí</span>
+                                    <span>Delivery charges</span>
+                                    <span>Free</span>
                                 </div>
                             </div>
 
@@ -141,8 +190,12 @@
                                         <span class="total-price" th:text="${cart.totalPriceProduct(addToCart)}"></span>
                                     </div>
                                 </div>
-                                </li>
                             </div>
+
+                            <button type="submit" class="button btn-payment">
+                                <i class="far fa-credit-card"></i>
+                                Payment
+                            </button>
                         </div>
                     </div>
                 </div>
