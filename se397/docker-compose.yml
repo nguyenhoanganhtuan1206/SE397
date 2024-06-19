@@ -1,0 +1,17 @@
+version: '3'
+services:
+  se_397_database:
+    container_name: se_397_database
+    image: mysql:8
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: se_397
+      MYSQL_PASSWORD: root
+    volumes:
+      - doan3_volume:/var/lib/mysql
+
+volumes:
+  doan3_volume:
+    driver: local

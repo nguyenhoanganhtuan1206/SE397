@@ -130,6 +130,23 @@ delete from orders where id = 7;
 /* Tinh rate */
 select sum(rate) / count(product_id) from evaluation where product_id = 7;
 
+/* Update */
+insert into `se_397`.`Product` (`image`, `name`, `price`,`quantity`, `status`, `category_id`) values('/assets/img/product/product-1.jpg' , 'Surface Pro 8' , 899 ,5, b'1' , 1);
+insert into `se_397`.`Product` (`image`, `name`, `price`,`quantity`, `status`, `category_id`) values('/assets/img/product/product-2.jpg' , 'Screen Gaming LG' , 340.99 ,5 , b'1' , 4);
+insert into `se_397`.`Product` (`image`, `name`, `price`,`quantity`, `status`, `category_id`) values('/assets/img/product/product-3.jpg' , 'Surface Laptop 4' , 700,5 , b'1' , 1);
+insert into `se_397`.`Product` (`image`, `name`, `price`,`quantity`, `status`, `category_id`) values('/assets/img/product/product-4.jpg' , 'Surface Studio' , 750 ,5, b'1' , 2);
+insert into `se_397`.`Product` (`image`, `name`, `price`,`quantity`, `status`, `category_id`) values('/assets/img/product/product-5.jpg' , 'Surface Laptop Studio' , 895.99 ,5, b'1' , 1);
+insert into `se_397`.`Product` (`image`, `name`, `price`,`quantity`, `status`, `category_id`) values('/assets/img/product/product-6.jpg' , 'Macbook Pro' , 850.9 ,5, b'1' , 1);
+insert into `se_397`.`Product` (`image`, `name`, `price`,`quantity`, `status`, `category_id`) values('/assets/img/product/product-7.jpg' , 'Wireless Headphones' , 350,5 , b'1' , 3);
+insert into `se_397`.`Product` (`image`, `name`, `price`,`quantity`, `status`, `category_id`) values('/assets/img/product/product-8.jpg' , 'Mac Book Air 2021' , 898.99,5 , b'1' , 1);
+INSERT INTO `se_397`.`Product` (`image`, `name`, `price`,`quantity`, `status`, `category_id`) VALUES ('/assets/img/product/product-17.jpg', 'M75 Sport Watch', '250.00',5, b'1', 4);
 
+insert into Category values(1,'Laptop');
+insert into Category values(2,'Screen');
+insert into Category values(3,'Headphone');
+insert into Category values(4,'Watches');
 
+INSERT INTO `se_397`.`PromotionDetail` (`end_date`, `start_date`, `status`, `title`) VALUES ('2021-03-18', '2021-03-08', 1, 'Women Day');
+
+INSERT INTO `se_397`.`Product` (`image`, `name`, `price`, `quantity`, `status`, `category_id`) VALUES ('/assets/img/product/product-13.jpg', 'Macbook Pro 2021', '870.99', '5', b'1', b'1');
 
