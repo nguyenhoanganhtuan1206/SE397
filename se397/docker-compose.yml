@@ -1,14 +1,23 @@
 version: '3'
 services:
-  se_397_database:
+  app:
+    build: .
+    container_name: se_397
+    ports:
+      - 8081:8080
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  db:
     container_name: se_397_database
     image: mysql:8
+    restart: always
     ports:
-      - 3306:3306
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: se_397
-      MYSQL_PASSWORD: root
+      - 3307:3306
+    env_file:
+      - .env
     volumes:
       - doan3_volume:/var/lib/mysql
 
