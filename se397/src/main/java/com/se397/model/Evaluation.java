@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Entity
+@Table(name = "evaluation")
 public class Evaluation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

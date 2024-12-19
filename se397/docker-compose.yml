@@ -1,7 +1,7 @@
 version: '3'
 services:
   app:
-    build: .
+    image: thaihoa123/se_403_cnpm:fix-2
     container_name: se_397
     ports:
       - 8081:8080

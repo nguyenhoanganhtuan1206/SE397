@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
+@Table(name = "promotiondetail")
 public class PromotionDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
